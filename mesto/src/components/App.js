@@ -19,20 +19,26 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
+  function handleCardClick(card) {
+    setIsSelectedCard({isOpen: true, src: card});
+  }
+
   function closeAllPopups() {
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setIsSelectedCard({isOpen: false, src: ""});
   }
 
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setIsSelectedCard] = React.useState({isOpen: false, src: ""});
 
   return (
     <div className="page">
       <Header />
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} />
+      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
       <Footer />
       <PopupWithForm name="edit-profile" title="Редактировать профиль" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
         <input id="name-input" className="popup__input popup__input_type_name" placeholder="Имя" defaultValue="" type="text"
@@ -65,7 +71,7 @@ function App() {
         <button className="popup__button popup__button_type_active popup__button-delete" type="submit">Да</button>
       </PopupWithForm>
 
-      <ImagePopup />
+      <ImagePopup card={selectedCard.src} onClose={closeAllPopups} isOpen={selectedCard.isOpen}/>
 
     </div>
   );

@@ -1,11 +1,12 @@
 import React from "react";
 import api from "../utils/Api";
+import Card from "./Card";
 
 function Main(props) {
-    const [userData, setUserData] = React.useState({ userName: "", userDescription: "", userAvatar: ""});
-    const [cards, setCards] = React.useState([]);
-    
-    
+    const [userData, setUserData] = React.useState({ userName: "", userDescription: "", userAvatar: "" });
+    const [cards, setCards] = React.useState([])
+
+
 
     React.useEffect(() => {
         api.getUserInfo()
@@ -25,18 +26,14 @@ function Main(props) {
     React.useEffect(() => {
         api.getInitialCards()
             .then((res) => {
-                const cards2 = [];
-                res.forEach(item => {
-                    cards2.push(item.name);
-                    setCards([...cards, cards2])
-                    console.log(cards)
-                });
+                setCards(res);
             })
 
             .catch((err) => {
                 console.log(err);
             })
     }, [])
+
 
 
     return (
@@ -57,19 +54,12 @@ function Main(props) {
                 <button onClick={props.onAddPlace} className="profile__button-add-card" type="button"></button>
             </section>
             <section className="elements">
-                <template id="elements_template">
-                    <div className="element">
-                        <button className="element__trash" type="button"></button>
-                        <img className="element__image" />
-                        <div className="element__signature">
-                            <h2 className="element__name"></h2>
-                            <div className="element__likebox">
-                                <button className="element__like" type="button"></button>
-                                <p className="element__like-counter"></p>
-                            </div>
-                        </div>
-                    </div>
-                </template>
+                    {cards.map(item => {
+                        
+                        return (
+                        <Card onCardClick={props.onCardClick} link={item.link} name={item.name} likes={item.likes.length} key={item._id}/>
+                        )
+                    })}
             </section>
         </main>
     )
