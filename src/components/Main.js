@@ -3,10 +3,9 @@ import api from "../utils/Api";
 import Card from "./Card";
 
 function Main(props) {
+
     const [userData, setUserData] = React.useState({ userName: "", userDescription: "", userAvatar: "" });
     const [cards, setCards] = React.useState([])
-
-
 
     React.useEffect(() => {
         api.getUserInfo()
@@ -34,8 +33,6 @@ function Main(props) {
             })
     }, [])
 
-
-
     return (
         <main className="main">
             <section className="profile">
@@ -54,12 +51,11 @@ function Main(props) {
                 <button onClick={props.onAddPlace} className="profile__button-add-card" type="button"></button>
             </section>
             <section className="elements">
-                    {cards.map(item => {
-                        
-                        return (
-                        <Card onCardClick={props.onCardClick} link={item.link} name={item.name} likes={item.likes.length} key={item._id}/>
-                        )
-                    })}
+                {cards.map(item => {
+                    return (
+                        <Card onCardClick={props.onCardClick} link={item.link} name={item.name} likes={item.likes.length} key={item._id} />
+                    )
+                })}
             </section>
         </main>
     )
