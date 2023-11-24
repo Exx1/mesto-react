@@ -64,29 +64,6 @@ class Api {
       .then((res) => this._checkStatus(res))
   }
 
-  addLikeCard(element) {
-    return fetch(`${this._baseUrl}cards/${element.id}/likes`, {
-      method: 'PUT',
-      headers: {
-        authorization: this._token,
-        'Content-Type': this._contentType
-      }
-    })
-      .then((res) => this._checkStatus(res))
-
-  }
-
-  deleteLikeCard(element) {
-    return fetch(`${this._baseUrl}cards/${element.id}/likes`, {
-      method: 'DELETE',
-      headers: {
-        authorization: this._token,
-        'Content-Type': this._contentType
-      }
-    })
-      .then((res) => this._checkStatus(res))
-  }
-
   setAvatar(link) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
@@ -108,6 +85,19 @@ class Api {
 
     return Promise.reject(`Ошибка: ${res.status}`)
   }
+
+
+changeLikeCardStatus(id, isLiked) {
+  return fetch(`${this._baseUrl}cards/likes/${id}`, {
+    method: isLiked ? 'PUT' : 'DELETE',
+    headers: {
+      authorization: this._token,
+      'Content-Type': this._contentType
+    },
+  })
+    .then((res) => this._checkStatus(res))
+}
+
 }
 
 const api = new Api({
