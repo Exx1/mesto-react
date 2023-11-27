@@ -8,8 +8,7 @@ function EditProfilePopup(props) {
     const [name, setName] = React.useState(currentUser.name);
     const [description, setDescription] = React.useState(currentUser.about);
 
-
-
+    
 
 React.useEffect(() => {
   setName(currentUser.name);
@@ -23,9 +22,18 @@ React.useEffect(() => {
     function handleChangeDescription(e) {
         setDescription(e.target.value)
     }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+    
+      props.onUpdateUser({
+        name,
+        about: description,
+      });
+    } 
  
     return(
-        <PopupWithForm name="edit-profile" title="Редактировать профиль" isOpen={props.isOpen} onClose={props.onClose} buttonText="Сохранить">
+        <PopupWithForm name="edit-profile" title="Редактировать профиль" onSubmit={handleSubmit} isOpen={props.isOpen} onClose={props.onClose} buttonText="Сохранить">
         <input id="name-input" className="popup__input popup__input_type_name" value={name || ''} onChange={handleChangeName} placeholder="Имя" type="text"
           name="name" minLength="2" maxLength="40" required />
         <span className="popup__input-error name-input-error"></span>

@@ -38,7 +38,7 @@ class Api {
       .then((res) => this._checkStatus(res))
   }
 
-  setNewCard(data) {
+  setNewCard(title, link) {
     return fetch(`${this._baseUrl}cards`, {
       method: 'POST',
       headers: {
@@ -46,8 +46,8 @@ class Api {
         'Content-Type': this._contentType
       },
       body: JSON.stringify({
-        name: data.title,
-        link: data.link
+        name: title,
+        link: link
       })
     })
       .then((res) => this._checkStatus(res))
