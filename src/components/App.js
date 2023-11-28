@@ -9,7 +9,6 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
-import Card from './Card';
 
 function App() {
 
@@ -55,23 +54,27 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
-  function handleCardClick(card) {
-    setIsSelectedCard({ isOpen: true, src: card });
+  function handleCardClick(link, name) {
+    setIsSelectedCard({ isOpen: true, src: link, name: name });
   }
 
   function closeAllPopups() {
     setIsAddPlacePopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setIsSelectedCard({ isOpen: false, src: "" });
+    setIsSelectedCard({ isOpen: false, src: "", name: "" });
   }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+    api.changeLikeCardStatus(card._id, !isLiked)
+    .then((newCard) => {
       setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   function handleCardDelete(card) {
@@ -81,6 +84,9 @@ function App() {
         setCards(cards.filter(function (item) {
           return item._id !== card._id;
         }))
+      })
+      .catch((err) => {
+        console.log(err);
       })
   }
 
@@ -108,7 +114,8 @@ function App() {
   function handleAddPlaceSubmit(title, link) {
     api.setNewCard(title, link)
     .then((res) => {
-      setCards([res, ...cards]); 
+      setCards([res, ...cards]);
+      closeAllPopups();
     })
     .catch((err) => {
       console.log(err);
@@ -131,7 +138,7 @@ function App() {
 
         <PopupWithForm name="delete-card" title="Вы уверены?" buttonText="Да"></PopupWithForm>
 
-        <ImagePopup card={selectedCard.src} onClose={closeAllPopups} isOpen={selectedCard.isOpen} />
+        <ImagePopup card={selectedCard.src} onClose={closeAllPopups} isOpen={selectedCard.isOpen} name={selectedCard.name}/>
       </CurrentUserContext.Provider>
     </div>
 

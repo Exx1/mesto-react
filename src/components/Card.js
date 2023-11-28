@@ -11,7 +11,7 @@ function Card(props) {
       );
 
     function handleClick() {
-        props.onCardClick(props.item.link);
+        props.onCardClick(props.item.link, props.item.name);
     }
 
     function handleCardLike() {
@@ -25,7 +25,7 @@ function Card(props) {
     return (
         <div className="element">
             {isOwn && <button className='element__trash' onClick={handleDeleteClick} />} 
-            <img className="element__image" src={props.item.link} onClick={handleClick} />
+            <img className="element__image" src={props.item.link} alt={props.item.name} onClick={handleClick} />
             <div className="element__signature">
                 <h2 className="element__name">{props.item.name}</h2>
                 <div className="element__likebox">
