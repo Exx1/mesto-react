@@ -105,6 +105,7 @@ function App() {
     api.setAvatar(avatar)
       .then(() => {
         setCurrentUser({...currentUser, avatar: avatar});
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err);
